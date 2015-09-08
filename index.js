@@ -9,7 +9,8 @@ var fs = require('fs'),
         '.svg': 'image/svg+xml'
     },
     options = {},
-    matchRegExp = /url\s*\(\s*["']?([^\)"']+)["']?\s*\)/gi;
+    matchRegExp = /url\s*\(\s*["']?([^\)"']+)["']?\s*\)/gi,
+    fileTypeRegExp = /\.png|\.gif|\.jpg|\.webp|\.svg/;
 
 function getUrlsToInline (content) {
     var urlsToInline = [],
@@ -20,7 +21,8 @@ function getUrlsToInline (content) {
     while ((urlMatch = matchRegExp.exec(content)) !== null) {
         url = urlMatch[1];
 
-        if (url.substr(-6, 6) == '?embed') {
+        // automatically include all image files
+        if (fileTypeRegExp.test(url)) {
             urlsToInline.push(url);
         }
     }
